@@ -1,1 +1,4 @@
-# ecs-service-discovery-example
+TODO: 
+- add documentation
+- add diagram
+- add deployment commands
