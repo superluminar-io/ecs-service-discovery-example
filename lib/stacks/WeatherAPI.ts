@@ -23,25 +23,25 @@ export class WeatherAPI extends Stack {
             namespace: 'weather-api'
         });
 
-        const temperatureProvider = new WeatherService(this, 'temperature-provider-service', {
-            serviceName: 'temperature-provider',
+        const defaultServiceProperties = {
             cluster: weatherCluster.cluster,
             securityGroup: weatherCluster.securityGroup,
             namespace: weatherCluster.namespace,
+        };
+
+        const temperatureProvider = new WeatherService(this, 'temperature-provider-service', {
+            ...defaultServiceProperties,
+            serviceName: 'temperature-provider',
         });
 
         const humidityProvider = new WeatherService(this, 'humidity-provider-service', {
+            ...defaultServiceProperties,
             serviceName: 'humidity-provider',
-            cluster: weatherCluster.cluster,
-            securityGroup: weatherCluster.securityGroup,
-            namespace: weatherCluster.namespace,
         });
 
         const weatherAggregator = new WeatherService(this, 'weather-aggregator-service', {
+            ...defaultServiceProperties,
             serviceName: 'weather-aggregator',
-            cluster: weatherCluster.cluster,
-            securityGroup: weatherCluster.securityGroup,
-            namespace: weatherCluster.namespace,
             environment: {
                 HUMIDITY_PROVIDER_URL: `http://${humidityProvider.serviceName}.${weatherCluster.namespace}:80`,
                 TEMPERATURE_PROVIDER_URL: `http://${temperatureProvider.serviceName}.${weatherCluster.namespace}:80`,
